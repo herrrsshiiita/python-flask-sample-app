@@ -1,30 +1,30 @@
 pipeline {
-   agent any
-    tools {
-        dockerTool 'docker' // This matches the name you gave in Global Tools
-    }
+    agent any
     
+    // This tells Jenkins to use the Docker tool you configured in 'Manage Jenkins'
+    tools {
+        dockerTool 'docker' 
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                // This pulls your code from GitHub
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-               steps {
+                echo 'Running Docker Build...'
+                // 'sh' is the command that actually does the work
                 sh 'docker build -t my-flask-app .'
-            }
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running Unit Tests...'
-                // This satisfies Step 5 of your assignment
-                // We run the tests inside a temporary container
+                // This satisfies Step 5: Testing the 'working artefact'
                 sh 'docker run --rm my-flask-app pytest'
             }
         }
