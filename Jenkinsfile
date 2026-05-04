@@ -2,6 +2,9 @@ pipeline {
     agent any
     
     // This tells Jenkins to use the Docker tool you configured in 'Manage Jenkins'
+    environment {
+        DOCKER_API_VERSION = '1.40'
+    }
     tools {
         dockerTool 'docker' 
     }
