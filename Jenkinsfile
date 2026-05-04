@@ -25,12 +25,12 @@ pipeline {
         }
 
         stage('Test') {
-            steps {
-                echo 'Running Unit Tests...'
-                // This satisfies Step 5: Testing the 'working artefact'
-                sh 'docker run --rm my-flask-app pytest'
-            }
-        }
+    steps {
+        echo 'Installing and Running Unit Tests...'
+        // This installs pytest first, THEN runs it
+        sh 'docker run --rm my-flask-app sh -c "pip install pytest && pytest"'
+    }
+}
 
         stage('Security Scan') {
             steps {
