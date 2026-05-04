@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    // Add this environment block to help Jenkins find Docker
+    environment {
+        DOCKER_HOME = '/usr/bin/docker'
+    }
     
     stages {
         stage('Checkout') {
@@ -11,9 +15,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building the Docker Image...'
-                // This satisfies Step 4 of your assignment
-                sh 'docker build -t my-flask-app .'
+                script {
+                    // This uses the Docker plugin logic instead of a raw shell command
+                    docker.build("my-flask-app:${env.BUILD_ID}")
+                }
             }
         }
 
