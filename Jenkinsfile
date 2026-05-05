@@ -41,13 +41,8 @@ pipeline {
        stage('Security Scan') {
     steps {
         echo 'Step 7: Identifying and Blocking Critical Vulnerabilities...'
-        // This command installs the scanner and runs it. 
-        // If it finds a vulnerability, the build will FAIL (turning Red).
-        sh '''
-            pip install --upgrade pip
-            pip install safety
-            safety check --full-report
-        '''
+        // We use 'docker run' to enter the container where 'pip' actually exists
+        sh 'docker run --rm my-flask-app sh -c "pip install --upgrade pip && pip install safety && safety check"'
     }
 }
     }
