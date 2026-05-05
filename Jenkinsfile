@@ -24,19 +24,25 @@ pipeline {
             }
         }
 
+       stage('Code Quality') {
+            steps {
+                echo 'Step 6: Static Code Analysis (Linting)...'
+                sh 'docker run --rm my-flask-app sh -c "pip install flake8 && flake8 . --ignore=E501,F401"'
+            }
+        }
+
         stage('Test') {
-    steps {
-        echo 'Installing and Running Unit Tests...'
-        // This installs pytest first, THEN runs it
-        sh 'docker run --rm my-flask-app sh -c "pip install pytest && pytest"'
-    }
-}
+            steps {
+                echo 'Step 5: Unit Testing...'
+                sh 'docker run --rm my-flask-app sh -c "pip install pytest && pytest"'
+            }
+        }
 
         stage('Security Scan') {
             steps {
-                echo 'Scanning for vulnerabilities...'
-                // This satisfies Step 7: We'll add Snyk/Trivy here later
-                echo 'Security scan placeholder'
+                echo 'Step 7: Security Analysis...'
+                // This will likely find vulnerabilities in old Flask versions—perfect for your report!
+                sh 'docker run --rm my-flask-app sh -c "pip install safety && safety check"'
             }
         }
     }
